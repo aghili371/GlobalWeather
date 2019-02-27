@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GlobalWeather
 {
-    internal  class CurrentDirectoryHelper
+    internal class CurrentDirectoryHelpers
     {
         internal const string AspNetCoreModuleDll = "aspnetcorev2_inprocess.dll";
 
@@ -13,19 +10,15 @@ namespace GlobalWeather
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
         [System.Runtime.InteropServices.DllImport(AspNetCoreModuleDll)]
-        private static extern int http_get_application_properties
-                      (ref IISConfigurationData iiConfigData);
+        private static extern int http_get_application_properties(ref IISConfigurationData iiConfigData);
 
-        [System.Runtime.InteropServices.StructLayout
-                   (System.Runtime.InteropServices.LayoutKind.Sequential)]
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
         private struct IISConfigurationData
         {
             public IntPtr pNativeApplication;
-            [System.Runtime.InteropServices.MarshalAs
-                    (System.Runtime.InteropServices.UnmanagedType.BStr)]
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.BStr)]
             public string pwzFullApplicationPath;
-            [System.Runtime.InteropServices.MarshalAs
-                    (System.Runtime.InteropServices.UnmanagedType.BStr)]
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.BStr)]
             public string pwzVirtualApplicationPath;
             public bool fWindowsAuthEnabled;
             public bool fBasicAuthEnabled;
@@ -37,8 +30,7 @@ namespace GlobalWeather
             try
             {
                 // Check if physical path was provided by ANCM
-                var sitePhysicalPath = Environment.GetEnvironmentVariable
-                                       ("ASPNETCORE_IIS_PHYSICAL_PATH");
+                var sitePhysicalPath = Environment.GetEnvironmentVariable("ASPNETCORE_IIS_PHYSICAL_PATH");
                 if (string.IsNullOrEmpty(sitePhysicalPath))
                 {
                     // Skip if not running ANCM InProcess
